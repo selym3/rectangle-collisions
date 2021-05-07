@@ -11,6 +11,8 @@
 #include <ostream>
 #endif
 
+#include <cmath>
+
 
 template <typename Number>
 struct vec2
@@ -39,6 +41,26 @@ struct vec2
     vec2() :
         vec2(0)
     {
+    }
+
+    ////////////////////
+    // MATH FUNCTIONS //
+    ////////////////////
+
+    Number dot(const vec2& v) const
+    {
+        return (x * v.x) + (y * v.y);
+    }
+
+    Number length() const
+    {
+        auto dxy = *this - 0;
+        return std::sqrt(dxy.dot(dxy));
+    }
+
+    vec2 norm() const
+    {
+        return *this / length();
     }
 
     ///////////////

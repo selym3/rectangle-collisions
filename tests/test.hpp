@@ -120,6 +120,16 @@ public:
         window.draw(render_rect{r, color});
     }
 
+    void drawCollision(const rectangle::ray_collision& r, const sf::Color& color=sf::Color::White)
+    {
+        drawLine(
+            r.hit,
+            r.hit + (r.normal * 50),
+            color
+        );
+
+    }
+
 };
 
 

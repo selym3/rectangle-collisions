@@ -24,17 +24,31 @@ struct CollisionTest : public Test
         auto& target = rects.at(0);
 
         if (getMouseButton(sf::Mouse::Left))
-            target.velocity = (mouse - target.center()) * dt;
+            target.velocity = (mouse - target.center()).norm() * 100 * dt;
         
-        for (int i = 1;i < rects.size(); ++i) 
-            if (target.collision(rects[i], dt))
-                target.velocity = 0;
+        for (int i = 1;i < rects.size(); ++i)  {
+            auto collision = target.collision(rects[i], dt);
+
+            if (collision) {
+                drawCollision(*collision, sf::Color::Green);
+
+                target.velocity += 
+                    collision->normal * 
+                    vec2d { std::abs(target.velocity.x), std::abs(target.velocity.y) } * 
+                    (1-collision->time);
+                
+            }
+        }
 
         target.position += target.velocity;
 
-
         for (const auto& rectangle : rects)
-            drawRectangle(rectangle);
+            drawRectangle(
+                rectangle, 
+                (&rectangle == &target) ? 
+                    sf::Color::Red : 
+                    sf::Color::White
+            );
 
     }
 

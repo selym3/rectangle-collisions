@@ -36,7 +36,7 @@ private:
         auto center = shape.position + (shape.size / 2.0);
         sf::Vertex line[] = {
             sf::Vertex({ (float)center.x, (float)center.y }, color),
-            sf::Vertex({ (float)(center.x + shape.velocity.x),  (float)(center.y + shape.velocity.y)}, color)
+            sf::Vertex({ (float)(center.x + shape.velocity.x * 100),  (float)(center.y + shape.velocity.y * 100)}, color)
         };
 
         target.draw(line, 2, sf::Lines);
