@@ -11,6 +11,11 @@ rectangle::rectangle(
 {
 }
 
+vec2d rectangle::center() const
+{
+    return this->position + (this->size / 2.0);
+}
+
 bool rectangle::overlaps(const vec2d& p) const
 {   
     auto extent = this->position + this->size; 
@@ -94,8 +99,8 @@ std::optional<rectangle::ray_collision> rectangle::overlaps(const ray& r, bool e
 
 std::optional<rectangle::ray_collision> rectangle::collision(const rectangle& r, double dt) const
 {
-    // If the rectangles are not touching and the input is not moving.
-    if (!this->overlaps(r) && this->velocity.x == 0 && this->velocity.y == 0)
+    // assuming the rectangles are not touching and the input is not moving.
+    if (this->velocity.x == 0 && this->velocity.y == 0)
         return std::nullopt;
 
     rectangle expanded_r {
@@ -103,15 +108,12 @@ std::optional<rectangle::ray_collision> rectangle::collision(const rectangle& r,
         r.size + this->size
     };
 
+    auto center = this->center();
     ray input_ray {
-        this->position,
-        (this->velocity * dt) + this->position
+        center,
+        (this->velocity * dt) + center
     };
 
     auto collision = expanded_r.overlaps(input_ray, false);
-    if (collision) {
-        return collision;
-    }
-
-    return std::nullopt;
+    return collision;
 }

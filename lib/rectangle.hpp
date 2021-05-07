@@ -15,6 +15,8 @@ struct rectangle
 
     vec2d velocity;
 
+    vec2d center() const;
+
     rectangle(
         const vec2d& position, 
         const vec2d& size, 

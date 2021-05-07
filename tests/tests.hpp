@@ -4,5 +4,6 @@
 #include "test.hpp"
 #include "point_test.hpp"
 #include "ray_test.hpp"
+#include "collision_test.hpp"
 
 #endif

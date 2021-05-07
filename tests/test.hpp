@@ -48,6 +48,11 @@ public:
     // HELPERS //
     /////////////
 
+    bool getMouseButton(const sf::Mouse::Button& button) const 
+    {
+        return sf::Mouse::isButtonPressed(button);
+    }
+
     vec2d getMouse() const 
     {
         return { 
@@ -56,7 +61,7 @@ public:
         };
     }
 
-    const bool getKey(const sf::Keyboard::Key& key) const
+    bool getKey(const sf::Keyboard::Key& key) const
     {
         return sf::Keyboard::isKeyPressed(key);
     }

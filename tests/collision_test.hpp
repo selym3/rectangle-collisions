@@ -20,6 +20,21 @@ struct CollisionTest : public Test
 
     void run(double dt)
     {
+        const auto mouse = getMouse();
+        auto& target = rects.at(0);
+
+        if (getMouseButton(sf::Mouse::Left))
+            target.velocity = (mouse - target.center()) * dt;
+        
+        for (int i = 1;i < rects.size(); ++i) 
+            if (target.collision(rects[i], dt))
+                target.velocity = 0;
+
+        target.position += target.velocity;
+
+
+        for (const auto& rectangle : rects)
+            drawRectangle(rectangle);
 
     }
 

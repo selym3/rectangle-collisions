@@ -10,10 +10,19 @@ g++ -std=c++17 main.cpp bin/*.o -lsfml-graphics -lsfml-window -lsfml-system -o m
 int main(int argc, char** argv)
 {
 
+    /*
     RayTest test {
         rectangle { 
             { 30, 100 }, 
             { 40, 25 } 
+        }
+    };
+    */
+
+    CollisionTest test {
+        { 
+            rectangle{{300,100}, {40, 25}},
+            rectangle{{400, 400}, {100, 150}}
         }
     };
 
