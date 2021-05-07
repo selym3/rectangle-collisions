@@ -1,5 +1,16 @@
 #include "../lib/rectangle.hpp"
 
+rectangle::rectangle(
+    const vec2d& position, 
+    const vec2d& size, 
+    const vec2d& velocity
+) :
+    position { position },
+    size { size },
+    velocity { velocity }
+{
+}
+
 bool rectangle::overlaps(const vec2d& p) const
 {   
     auto extent = this->position + this->size; 
@@ -79,4 +90,28 @@ std::optional<rectangle::ray_collision> rectangle::overlaps(const ray& r, bool e
         t_hit_near
     };
 
+}
+
+std::optional<rectangle::ray_collision> rectangle::collision(const rectangle& r, double dt) const
+{
+    // If the rectangles are not touching and the input is not moving.
+    if (!this->overlaps(r) && this->velocity.x == 0 && this->velocity.y == 0)
+        return std::nullopt;
+
+    rectangle expanded_r {
+        r.position - (this->size / 2.0),
+        r.size + this->size
+    };
+
+    ray input_ray {
+        this->position,
+        (this->velocity * dt) + this->position
+    };
+
+    auto collision = expanded_r.overlaps(input_ray, false);
+    if (collision) {
+        return collision;
+    }
+
+    return std::nullopt;
 }

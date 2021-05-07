@@ -5,38 +5,74 @@
 #include "../lib/rectangle.hpp"
 #include "render_rect.hpp"
 
+class Timer
+{
+    // TODO: add a timer
+    // have a get dt method
+}; 
+
 class Test
 {
-    vec2d mouse;
-
 protected:
     sf::RenderWindow window;
 
-    rectangle target;
-    sf::Color color;
-
 public:
-    Test(int width, int height, const rectangle& target, const sf::Color& color=sf::Color::Red) :
+    //////////////////
+    // CONSTRUCTORS //
+    //////////////////
+
+    Test(int width, int height) :
         window {
             sf::VideoMode(width, height),
             "Rectangle Collision Test",
             sf::Style::None
-        },
-        color { color },
-        target { target }
+        }
     {
-        updateMouse();
     }
 
-    Test(const rectangle& target, const sf::Color& color=sf::Color::Red) :
-        Test(600, 600, target, color)
+    Test() :
+        Test(600, 600)
     {
     }
     
     virtual ~Test()=default;
 
-    const vec2d& getMouse() const { return mouse; }
-    bool isRunning() const { return window.isOpen(); }
+public:
+    //////////////////
+    // OVERIDDABLES //
+    //////////////////
+
+    virtual void run() {}
+    virtual void handleKey(const sf::Keyboard::Key& key) {}
+    virtual sf::Color getBackground() { return sf::Color(107, 151, 255); }
+
+public:
+    /////////////
+    // HELPERS //
+    /////////////
+
+    vec2d getMouse() const 
+    {
+        return { 
+            (double) sf::Mouse::getPosition(window).x, 
+            (double) sf::Mouse::getPosition(window).y
+        };
+    }
+
+    const bool getKey(const sf::Keyboard::Key& key) const
+    {
+        return sf::Keyboard::isKeyPressed(key);
+    }
+    
+public:
+    ////////////////////
+    // MAIN FUNCTIONS //
+    ////////////////////
+
+    bool isRunning() const 
+    { 
+        return window.isOpen(); 
+    }
     
     void execute() 
     {
@@ -50,41 +86,34 @@ public:
                 if (event.key.code == sf::Keyboard::Escape) {
                     window.close();
                 }
+                handleKey(event.key.code);
             }
         }
 
-        window.clear(sf::Color(107, 151, 255));
-        updateMouse();
-
+        window.clear(this->getBackground());
         run();
-
-        window.draw(render_rect{target, color});
-        
         window.display();
     }
 
-    void drawLine(const vec2d& start, const vec2d& end)
+public:
+    ////////////////////
+    // RENDER HELPERS //
+    ////////////////////
+
+    void drawLine(const vec2d& start, const vec2d& end, const sf::Color& color=sf::Color::White)
     {
         sf::Vertex line[] = 
         {
-            sf::Vertex(sf::Vector2f(start.x, start.y)),
-            sf::Vertex(sf::Vector2f(end.x, end.y))
+            sf::Vertex(sf::Vector2f(start.x, start.y), color),
+            sf::Vertex(sf::Vector2f(end.x, end.y), color)
         };
 
         window.draw(line, 2, sf::Lines);
     }
 
-
-    virtual void run() {}
-
-private:
-
-    void updateMouse() 
+    void drawRectangle(const rectangle& r, const sf::Color& color=sf::Color::White)
     {
-        mouse = { 
-            (double) sf::Mouse::getPosition(window).x, 
-            (double) sf::Mouse::getPosition(window).y
-        };
+        window.draw(render_rect{r, color});
     }
 
 };

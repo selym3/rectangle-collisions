@@ -5,19 +5,23 @@
 
 struct PointTest : public Test
 {
+    rectangle r;
 
     PointTest(const rectangle& r) :
-        Test(r)
+        Test(),
+        r { r } 
     {
     }
 
     void run()
     {
-        auto touchesMouse = this->target.overlaps(this->getMouse()); 
+        auto touchesMouse = r.overlaps(this->getMouse()); 
 
-        this->color = touchesMouse ?
+        auto color = touchesMouse ?
             sf::Color::Red :
             sf::Color::Green;
+        
+        drawRectangle(r, color);
     }
 
 };

@@ -6,11 +6,14 @@
 struct RayTest : public Test
 {
 
+    rectangle target;
+
     ray my_ray;
     double normal_length = 50;
 
     RayTest(const rectangle& r) :
-        Test(r)
+        Test(),
+        target { r }
     {
         auto size = this->window.getSize();
         my_ray = {
@@ -26,11 +29,13 @@ struct RayTest : public Test
 
         auto collision = this->target.overlaps(my_ray);
 
-        this->color = collision ? sf::Color::Red : sf::Color::Green;
+        auto color = collision ? sf::Color::Red : sf::Color::Green;
+
+        drawRectangle(target, color);
 
         if (collision) {
             auto normal_end = collision->hit + collision->normal * normal_length;
-            drawLine(collision->hit, normal_end);
+            drawLine(collision->hit, normal_end, color);
         }
 
         drawLine(my_ray.start, my_ray.end);

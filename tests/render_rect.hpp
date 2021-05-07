@@ -4,7 +4,7 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 #include "../lib/rectangle.hpp"
 
@@ -28,9 +28,19 @@ private:
         sf::RectangleShape rectangle;
         rectangle.setSize({ (float)shape.size.x, (float)shape.size.y });
         rectangle.setPosition({ (float)shape.position.x, (float)shape.position.y });
-        rectangle.setFillColor(color);
+        rectangle.setOutlineColor(color);
+        rectangle.setOutlineThickness(3.0f);
 
         target.draw(rectangle, states);
+
+        auto center = shape.position + (shape.size / 2.0);
+        sf::Vertex line[] = {
+            sf::Vertex({ (float)center.x, (float)center.y }, color),
+            sf::Vertex({ (float)(center.x + shape.velocity.x),  (float)(center.y + shape.velocity.y)}, color)
+        };
+
+        target.draw(line, 2, sf::Lines);
+
     }
 
 };
