@@ -23,7 +23,7 @@ struct RayTest : public Test
         };
     }
 
-    void run()
+    void run(double dt)
     {
         my_ray.end = this->getMouse();
 

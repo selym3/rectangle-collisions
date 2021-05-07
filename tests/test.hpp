@@ -4,17 +4,13 @@
 #include <SFML/Graphics.hpp>
 #include "../lib/rectangle.hpp"
 #include "render_rect.hpp"
-
-class Timer
-{
-    // TODO: add a timer
-    // have a get dt method
-}; 
+#include "timer.hpp"
 
 class Test
 {
 protected:
     sf::RenderWindow window;
+    Timed::Timer stopwatch;
 
 public:
     //////////////////
@@ -26,7 +22,8 @@ public:
             sf::VideoMode(width, height),
             "Rectangle Collision Test",
             sf::Style::None
-        }
+        },
+        stopwatch {}
     {
     }
 
@@ -42,7 +39,7 @@ public:
     // OVERIDDABLES //
     //////////////////
 
-    virtual void run() {}
+    virtual void run(double dt) {}
     virtual void handleKey(const sf::Keyboard::Key& key) {}
     virtual sf::Color getBackground() { return sf::Color(107, 151, 255); }
 
@@ -90,8 +87,10 @@ public:
             }
         }
 
+        const double dt = this->stopwatch.reset();
+
         window.clear(this->getBackground());
-        run();
+        run(dt);
         window.display();
     }
 

@@ -13,7 +13,7 @@ struct PointTest : public Test
     {
     }
 
-    void run()
+    void run(double dt)
     {
         auto touchesMouse = r.overlaps(this->getMouse()); 
 

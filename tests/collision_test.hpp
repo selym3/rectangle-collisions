@@ -18,7 +18,7 @@ struct CollisionTest : public Test
     {
     }
 
-    void run()
+    void run(double dt)
     {
 
     }
